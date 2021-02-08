@@ -13,6 +13,79 @@ import java.util.ArrayList;
  */
 public class Trader
 {
-    // A vous de jouer
     
+    
+    
+    private int idTrader;
+    private String nomTrader;
+    private ArrayList<Action> mesActions;
+    
+    public Trader (int unId, String unNom )
+    {
+       this.idTrader = unId;
+        nomTrader = unNom;
+        mesActions = new ArrayList<Action>();
+ 
+    }
+
+    /**
+     * @return the idTrader
+     */
+    public int getIdTrader() {
+        return idTrader;
+    }
+
+    /**
+     * @param idTrader the idTrader to set
+     */
+    public void setIdTrader(int idTrader) {
+        this.idTrader = idTrader;
+    }
+
+    /**
+     * @return the nomTrader
+     */
+    public String getNomTrader() {
+        return nomTrader;
+    }
+
+    /**
+     * @param nomTrader the nomTrader to set
+     */
+    public void setNomTrader(String nomTrader) {
+        this.nomTrader = nomTrader;
+    }
+
+    /**
+     * @return the mesActions
+     */
+    public ArrayList<Action> getMesActions() {
+        return mesActions;
+    }
+
+    /**
+     * @param mesActions the mesActions to set
+     */
+    public void setMesActions(ArrayList<Action> mesActions) {
+        this.mesActions = mesActions;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+ 
 }
