@@ -265,31 +265,48 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void tblTradersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTradersMouseClicked
         
-     int choix; 
-        choix = Integer.parseInt(tblActions.getValueAt(tblTraders.getSelectedRow(),1).toString());
-        
+     
+         dtmActions.getDataVector().removeAllElements();
          
-        double montant = 0;
+         double montant = 0;
         
-        for ( Trader trad : mesTraders)
+         int choix = Integer.parseInt( tblTraders.getValueAt(tblTraders.getSelectedRow(), 0).toString());
+         
+        
+        for( Trader trad : mesTraders)
+        
         {
-            
-            for ( Action act : trad.getMesActions())
+         
+          if(trad.getIdTrader() == choix)
             {
-                montant = ( (act.getValeurActuel()) * (act.getQuantAchat()) ) -   ( (act.getPrixAchat()) * (act.getQuantAchat()) ) ;
-                 choix++;
-                 v = new Vector();
-                 v.add(act.getIdAction());
-                 v.add(act.getNomAction());
-                 v.add(act.getValeurActuel());
-                 v.add(act.getPrixAchat());
-                 v.add(act.getQuantAchat());
+            
+            for(Action act : trad.getMesActions())
+            {
+               montant = ((act.getValeurActuel() * act.getQuantAchat())  -   (act.getPrixAchat() * act.getQuantAchat())) ;
+                        v = new Vector();
+                        v.add(act.getIdAction());
+                        v.add(act.getNomAction());
+                        v.add(act.getValeurActuel());
+                        v.add(act.getPrixAchat());
+                        v.add(act.getQuantAchat());
                  dtmActions.addRow(v);
+                    
+                }
             }
-          
         } lblPortefeuille.setText(String.valueOf(montant));
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+  
         
         
         
