@@ -16,12 +16,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author jacqu
  */
+
 public class FrmPrincipal extends javax.swing.JFrame {
 
     DefaultTableModel dtmTraders;
     DefaultTableModel dtmActions;
     Vector v;
     ArrayList<Trader> mesTraders;
+    ArrayList<Action> mesActions;
     int numTrader;
     int numAction;
     public FrmPrincipal() {
@@ -70,13 +72,25 @@ public class FrmPrincipal extends javax.swing.JFrame {
             new String [] {
                 "Numéro", "Nom"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblTraders.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblTradersMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tblTraders);
+        if (tblTraders.getColumnModel().getColumnCount() > 0) {
+            tblTraders.getColumnModel().getColumn(0).setResizable(false);
+            tblTraders.getColumnModel().getColumn(1).setResizable(false);
+        }
 
         jLabel3.setText("Liste des actions du trader");
 
@@ -87,13 +101,28 @@ public class FrmPrincipal extends javax.swing.JFrame {
             new String [] {
                 "Numéro", "Nom", "Cours réel", "Prix achat", "Quantité achetée"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblActions.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblActionsMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tblActions);
+        if (tblActions.getColumnModel().getColumnCount() > 0) {
+            tblActions.getColumnModel().getColumn(0).setResizable(false);
+            tblActions.getColumnModel().getColumn(1).setResizable(false);
+            tblActions.getColumnModel().getColumn(2).setResizable(false);
+            tblActions.getColumnModel().getColumn(3).setResizable(false);
+            tblActions.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         lblMessage.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -106,6 +135,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jLabel4.setText("Quantité vendue");
 
         txtQuantiteVendue.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtQuantiteVendue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtQuantiteVendueActionPerformed(evt);
+            }
+        });
 
         btnVendre.setText("Vendre");
         btnVendre.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -172,15 +206,93 @@ public class FrmPrincipal extends javax.swing.JFrame {
         dtmTraders = (DefaultTableModel)tblTraders.getModel();
         dtmActions = (DefaultTableModel)tblActions.getModel();
         mesTraders = new ArrayList<>();
+        mesActions = new ArrayList<>();
+         
         
-        // A vous de jouer
+// trader
+        Trader trad1 = new Trader (1,"Enzo");
+        Trader trad2 = new Trader (2,"Noa");
+        Trader trad3 = new Trader (3,"Lilou");
+        Trader trad4 = new Trader (4,"Milo");
+        
+        //les actions
+        Action act1 = new Action (1,"Twiter", 169.15,159,110 );
+        Action act2 = new Action (2,"Apple",171.89,173,54 ); 
+        Action act3 = new Action (3,"Facebook",105.67,98.45,145 );
+        Action act4 = new Action (4,"Microsoft", 110,113.08,32);
+        Action act5 = new Action (5,"Dell", 56.12,54,78);
+        Action act6 = new Action (6,"WMWare", 121.56,123.91,43);
+        Action act7 = new Action (7,"IBM", 42.61,40.98,126 );
+  
+        
+        trad1.getMesActions().add(act1);
+        trad1.getMesActions().add(act2);
+        trad1.getMesActions().add(act7);
+        
+        trad2.getMesActions().add(act1);
+        trad2.getMesActions().add(act3);
+        trad2.getMesActions().add(act4);
+        trad2.getMesActions().add(act5);
+        
+        trad3.getMesActions().add(act4);
+        trad3.getMesActions().add(act5);
+        trad3.getMesActions().add(act1);
+        
+        mesActions.add(act1);
+        mesActions.add(act2);
+        mesActions.add(act3);
+        mesActions.add(act4);
+        mesActions.add(act5);
+        mesActions.add(act7);
+        
+        mesTraders.add(trad1);
+        mesTraders.add(trad2);
+        mesTraders.add(trad3);
+        mesTraders.add(trad4);
+        
+        
+         for(Trader trad : mesTraders)
+        {
+            v = new Vector();
+            v.add(trad.getIdTrader());
+            v.add(trad.getNomTrader());
+            dtmTraders.addRow(v);
+        }
+         
         
         
     }//GEN-LAST:event_formWindowOpened
 
     private void tblTradersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTradersMouseClicked
         
-        // A vous de jouer
+     int choix; 
+        choix = Integer.parseInt(tblActions.getValueAt(tblTraders.getSelectedRow(),1).toString());
+        
+         
+        double montant = 0;
+        
+        for ( Trader trad : mesTraders)
+        {
+            
+            for ( Action act : trad.getMesActions())
+            {
+                montant = ( (act.getValeurActuel()) * (act.getQuantAchat()) ) -   ( (act.getPrixAchat()) * (act.getQuantAchat()) ) ;
+                 choix++;
+                 v = new Vector();
+                 v.add(act.getIdAction());
+                 v.add(act.getNomAction());
+                 v.add(act.getValeurActuel());
+                 v.add(act.getPrixAchat());
+                 v.add(act.getQuantAchat());
+                 dtmActions.addRow(v);
+            }
+          
+        } lblPortefeuille.setText(String.valueOf(montant));
+        
+        
+        
+        
+        
         
     }//GEN-LAST:event_tblTradersMouseClicked
 
@@ -193,8 +305,25 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private void btnVendreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVendreMouseClicked
         
         // A vous de jouer
+        if ( txtQuantiteVendue.getText().compareTo("") == 0 )
+         {
+             JOptionPane.showMessageDialog(this, "Erreur de saisie, Veuillez saisir la valeur du nouveau relevé ");
+         }
+         
         
+         
+         else if( txtQuantiteVendue.getText().compareTo("") <0 )
+         {
+             JOptionPane.showMessageDialog(this, "Erreur de saisie, Veuillez saisir la valeur de l'ancien relevé. ");
+         }
+         
+       
     }//GEN-LAST:event_btnVendreMouseClicked
+
+    private void txtQuantiteVendueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQuantiteVendueActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtQuantiteVendueActionPerformed
 
     /**
      * @param args the command line arguments
